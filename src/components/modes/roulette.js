@@ -1,5 +1,7 @@
 import { shuffleWithSeed } from "static/scripts/Util";
+import { IoTriangleSharp } from "react-icons/io5";
 import "./roulette.scss";
+import AnimatedBigNumber from "components/molecules/AnimatedNumber";
 
 const SEED = 145204;
 // const rouletteSequence = shuffleWithSeed(
@@ -15,12 +17,17 @@ const Roulette = () => {
   return (
     <div className="roulette mode">
       <div className="main-content">
+        <AnimatedBigNumber />
         <div className="rotator">
+          <div className="indicator">
+            <IoTriangleSharp />
+          </div>
+          <div className="center-circle">50</div>
           <div className="rotator-inner">
             {rouletteSequence.map((item, index) => {
               return (
                 <div key={index} className="rotator-item" indicate={item}>
-                  {item}
+                  <div className="rotator-item-inner">{item}</div>
                 </div>
               );
             })}
@@ -31,6 +38,8 @@ const Roulette = () => {
     </div>
   );
 };
+
+const randomPick = () => {};
 
 export default Roulette;
 

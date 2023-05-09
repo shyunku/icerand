@@ -12,13 +12,41 @@
       display: flex;
       width: $size;
       height: $size;
-      border: 5px solid red;
+      border: 5px solid rgb(145, 160, 144);
       border-radius: 50%;
-      padding: 10px;
+      // padding: 10px;
 
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      .indicator {
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateY(-6px) scaleY(-1.2);
+        z-index: 40;
+        font-size: 20px;
+        color: rgb(234, 255, 236);
+      }
+
+      .center-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgb(126, 78, 38);
+        z-index: 30;
+        width: calc($size / 6);
+        height: calc($size / 6);
+        border-radius: 50%;
+        font-size: 40px;
+        font-weight: bold;
+        border: 3px solid #ffc981;
+      }
 
       .rotator-inner {
         display: flex;
@@ -28,30 +56,31 @@
         .rotator-item {
           display: flex;
           transform-origin: 50% 100%;
-          width: 30px;
-          height: $size / 2;
+          width: calc(3.3 * $size / 36);
+          height: calc($size / 2);
           position: absolute;
           top: 0;
           left: 50%;
           justify-content: center;
-          padding-top: 5px;
+          // padding-top: 5px;
           font-size: 18px;
           font-weight: bold;
           box-sizing: border-box;
+          clip-path: polygon(50% 100%, 0 0, 100% 0);
           //   transform: translate(-50%, 0);
 
           // rotate and transform as roullette
           @for $i from 1 through 36 {
             &:nth-child(#{$i}) {
-              transform: translate(-50%, 0) rotateZ(#{10 * $i}deg);
+              transform: translate(-50%, 0) rotateZ(#{10 * ($i - 1)}deg);
             }
           }
 
           &[indicate="2"] {
-            background-color: rgb(218, 144, 255);
+            background-color: rgb(189, 107, 255);
           }
           &[indicate="3"] {
-            background-color: rgb(58, 104, 255);
+            background-color: rgb(82, 123, 255);
           }
           &[indicate="5"] {
             background-color: rgb(49, 207, 188);
@@ -64,6 +93,16 @@
           }
           &[indicate="50"] {
             background-color: rgb(255, 28, 28);
+          }
+
+          &-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 32px;
+
+            background-color: rgba(0, 0, 0, 0.266);
           }
         }
       }
