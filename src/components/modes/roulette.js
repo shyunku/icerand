@@ -26,8 +26,8 @@ const Roulette = () => {
   const [lastRoundDoneTime, setLastRoundDoneTime] = useState(Date.now());
   const { value: currentAngle, fixed: stopped } = useAnimatedNumber({
     value: targetAngle,
-    asr: 0.65,
-    tolerance: 0.1,
+    asr: 0.75,
+    tolerance: 0.05,
   });
   const currentIndex = useMemo(() => {
     const angleRem = 360 - ((currentAngle - PART_ANGLE / 2) % 360);
@@ -47,7 +47,7 @@ const Roulette = () => {
 
     const t2 = fastInterval(() => {
       setSecondUpdater((prev) => prev + 1);
-    }, 1000);
+    }, 100);
 
     return () => {
       clearInterval(t1);

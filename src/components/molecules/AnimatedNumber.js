@@ -42,8 +42,6 @@ const useAnimatedNumber = ({ value, asr = 0.99, useInt = false, tolerance = 0.00
     return () => cancelAnimationFrame(frameRef.current);
   }, [current, value, fixed]);
 
-  useEffect(() => {}, [useInt]);
-
   return { value: retVal, fixed };
 };
 
