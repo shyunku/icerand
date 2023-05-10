@@ -1,7 +1,18 @@
 import { Outlet } from "react-router-dom";
 import "./home.layout.scss";
+import { fastInterval, formatKoUnit } from "static/scripts/Util";
+import BigNumber from "bignumber.js";
+import { useEffect, useState } from "react";
 
 const HomeLayout = () => {
+  const [money, setMoney] = useState(BigNumber(150));
+
+  useEffect(() => {
+    fastInterval(() => {
+      setMoney((prev) => prev.multipliedBy(1.001));
+    }, 30);
+  }, []);
+
   return (
     <div className="home-layout">
       <div className="menu-list">
@@ -16,7 +27,7 @@ const HomeLayout = () => {
         </div>
         <div className="footer">
           <div className="label">총 자산</div>
-          <div className="value">238억 2405만 2000원</div>
+          <div className="value">{formatKoUnit(money.integerValue())} 원</div>
         </div>
       </div>
     </div>

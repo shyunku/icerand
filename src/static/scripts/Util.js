@@ -51,6 +51,26 @@ export function toRelativeTime(milli, progress = false) {
   return progress ? "Done" : "Just now";
 }
 
+const CURRENCY_UNITS = ["", "만", "억", "조", "경", "해", "자", "양", "구", "간", "정", "재", "극"];
+/**
+ *
+ * @param {BigNumber} value
+ */
+export function formatKoUnit(value) {
+  let str = "";
+  for (let i = 0; i < CURRENCY_UNITS.length; i++) {
+    if (value.comparedTo(10000) > 0) {
+      const rem = value.mod(10000);
+      str = rem.integerValue() + CURRENCY_UNITS[i] + " " + str;
+    } else {
+      str = value.integerValue() + CURRENCY_UNITS[i] + " " + str;
+      break;
+    }
+    value = value.div(10000);
+  }
+  return str;
+}
+
 function formatSize(value) {
   if (value >= 100) return new BigNumber(value).toFormat(0);
   if (value >= 10) return new BigNumber(value).toFormat(1);

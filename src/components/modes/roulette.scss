@@ -46,6 +46,12 @@
         font-size: 40px;
         font-weight: bold;
         border: 3px solid #ffc981;
+        color: rgba(255, 255, 255, 0.42);
+
+        &.decided {
+          color: white;
+          background: rgb(168, 105, 53);
+        }
       }
 
       .rotator-inner {
@@ -67,6 +73,7 @@
           font-weight: bold;
           box-sizing: border-box;
           clip-path: polygon(50% 100%, 0 0, 100% 0);
+          z-index: 31;
           //   transform: translate(-50%, 0);
 
           // rotate and transform as roullette
@@ -74,6 +81,11 @@
             &:nth-child(#{$i}) {
               transform: translate(-50%, 0) rotateZ(#{10 * ($i - 1)}deg);
             }
+          }
+
+          &.current {
+            z-index: 32;
+            color: red;
           }
 
           &[indicate="2"] {

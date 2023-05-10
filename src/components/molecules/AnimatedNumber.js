@@ -1,24 +1,50 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
- *
+ * @param {Number} value - target value
  * @param {Number} asr - animation speed ratio
  */
-const AnimatedBigNumber = ({ number, asr = 0.9 }) => {
+const useAnimatedNumber = ({ value, asr = 0.99, useInt = false, tolerance = 0.000001 }) => {
   const frameRef = useRef(0);
-  const [lastUpdateTime, setLastUpdateTime] = useState(0);
+  const [current, setCurrent] = useState(value);
+  const curTolerance = useMemo(() => {
+    return useInt ? 1 : tolerance;
+  }, [useInt, tolerance]);
+  const [fixed, setFixed] = useState(false);
 
-  const animate = () => {
-    const diff = Date.now() - lastUpdateTime;
-    console.log("animate", diff);
-    frameRef.current = requestAnimationFrame(animate);
-    setLastUpdateTime(Date.now());
+  const retVal = useMemo(() => {
+    return useInt ? parseInt(current) : current;
+  }, [current, useInt]);
+
+  const animate = (prevTime) => {
+    const now = Date.now();
+    const dt = (now - prevTime) / 1000;
+    const nextValue = (value - current) * (1 - (1 - asr) ** dt) + current;
+    // console.log({
+    //   value,
+    //   current,
+    //   nextValue,
+    //   dt,
+    // });
+    if (Math.abs(nextValue - value) > curTolerance) {
+      frameRef.current = requestAnimationFrame(() => animate(now));
+      setCurrent(nextValue);
+    } else {
+      cancelAnimationFrame(frameRef.current);
+      setCurrent(value);
+      setFixed(true);
+    }
   };
 
   useEffect(() => {
-    animate();
+    setFixed(false);
+    animate(Date.now());
     return () => cancelAnimationFrame(frameRef.current);
-  }, []);
+  }, [current, value, fixed]);
+
+  useEffect(() => {}, [useInt]);
+
+  return { value: retVal, fixed };
 };
 
-export default AnimatedBigNumber;
+export default useAnimatedNumber;
